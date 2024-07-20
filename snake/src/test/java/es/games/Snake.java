@@ -23,7 +23,12 @@ public class Snake {
         this.direction = initialDirection;
     }
 
-    public Snake(int i, int j) {
+    // public Snake(SnakeGrid snakeGrid) {
+    //     snakeGrid.getMiddleCell().put(new SnakePart());
+    //     snakeGrid.getMiddleCell().getLeft().put(new SnakePart());
+    // }
+
+    public Snake(SnakeGrid mockGrid, int i, int j) {
         //TODO Auto-generated constructor stub
     }
 

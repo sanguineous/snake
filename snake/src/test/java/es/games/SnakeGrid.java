@@ -8,8 +8,20 @@ public class SnakeGrid {
     }
 
     public Cell getCell(int x, int y) {
-        Cell cell = grid[x][y];
-        return cell == null ? new Cell() : cell;
+        if(grid[x][y] == null){
+            grid[x][y] = new Cell();
+        }
+        return grid[x][y];
+    }
+
+    public Cell getMiddleCell() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMiddleCell'");
+    }
+
+    public Object put(int eq, int eq2, SnakePart any) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'put'");
     }
 
 }

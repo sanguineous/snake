@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
+import static org.mockito.Mockito.*;
+
 /**
  * Unit test for simple App.
  */
@@ -31,6 +33,13 @@ public class AppTest
         assertThatThrownBy(() -> { a4x3SnakeGrid.getCell(5, 2); }).isInstanceOf(IndexOutOfBoundsException.class);
         assertThatThrownBy(() -> { a4x3SnakeGrid.getCell(2, 4); }).isInstanceOf(IndexOutOfBoundsException.class);
         assertThatThrownBy(() -> { a4x3SnakeGrid.getCell(7, 9); }).isInstanceOf(IndexOutOfBoundsException.class);
+    }
+
+    @Test
+    public void gettingSameCellTwiceResultInSameCell(){
+        Cell cell1 = a4x3SnakeGrid.getCell(2, 2);
+        Cell cell2 = a4x3SnakeGrid.getCell(2, 2);
+        assertThat(cell1).isEqualTo(cell2);
     }
 
     @Test
@@ -75,6 +84,33 @@ public class AppTest
         assertThatThrownBy(() -> { cell.put(new Fly()); })
             .isInstanceOf(UnsupportedPlacementException.class);
     }
+
+    @Test
+    public void boh(){
+        SnakeGrid mockGrid = mock(SnakeGrid.class);
+        new Snake(mockGrid, 3, 4);
+        verify(mockGrid.put(eq(3), eq(4), any(SnakePart.class)));
+        verify(mockGrid.put(eq(2), eq(4), any(SnakePart.class)));
+    }
+
+
+    // @Test
+    // public void newSnakeShouldHaveHeadInTheMiddleOfTheGridSizeOfTwoAndATailOnTheLeftOfTheHead()
+    // {
+    //     int gridRows = 5;
+    //     int gridColums = 10;
+    //     SnakeGrid snakeGrid = mock(SnakeGrid.class);
+    //     new Snake(snakeGrid);
+    //     for(int x = 0; x < gridColums ; x++){
+    //         for(int y = 0; y < gridRows; y++){
+    //             if(x == 5 && y == 2 || x == 4 && y == 2){
+    //                 assertThat(snakeGrid.getCell(x, y).getContent()).isInstanceOf(SnakePart.class);
+    //             } else {
+    //                 assertThat(snakeGrid.getCell(x, y).getContent()).isInstanceOf(EmptySpace.class);
+    //             }
+    //         }
+    //     }
+    // }
 
     @Test
     public void testSnakeMovingRightThenLeftShouldDie()
