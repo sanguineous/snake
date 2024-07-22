@@ -2,6 +2,7 @@ package es.games;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
@@ -85,32 +86,42 @@ public class AppTest
             .isInstanceOf(UnsupportedPlacementException.class);
     }
 
-    @Test
-    public void boh(){
-        SnakeGrid mockGrid = mock(SnakeGrid.class);
-        new Snake(mockGrid, 3, 4);
-        verify(mockGrid.put(eq(3), eq(4), any(SnakePart.class)));
-        verify(mockGrid.put(eq(2), eq(4), any(SnakePart.class)));
-    }
-
+    // @Test
+    // public void boh(){
+    //     SnakeGrid mockGrid = mock(SnakeGrid.class);
+    //     new Snake(mockGrid, 3, 4);
+    //     verify(mockGrid.put(eq(3), eq(4), any(SnakePart.class)));
+    //     verify(mockGrid.put(eq(2), eq(4), any(SnakePart.class)));
+    // }
 
     // @Test
-    // public void newSnakeShouldHaveHeadInTheMiddleOfTheGridSizeOfTwoAndATailOnTheLeftOfTheHead()
-    // {
-    //     int gridRows = 5;
-    //     int gridColums = 10;
-    //     SnakeGrid snakeGrid = mock(SnakeGrid.class);
-    //     new Snake(snakeGrid);
-    //     for(int x = 0; x < gridColums ; x++){
-    //         for(int y = 0; y < gridRows; y++){
-    //             if(x == 5 && y == 2 || x == 4 && y == 2){
-    //                 assertThat(snakeGrid.getCell(x, y).getContent()).isInstanceOf(SnakePart.class);
-    //             } else {
-    //                 assertThat(snakeGrid.getCell(x, y).getContent()).isInstanceOf(EmptySpace.class);
-    //             }
-    //         }
-    //     }
+    // public void boh2(){
+    //     Cell headCell = new Cell();
+    //     Cell tailCell = new Cell();
+    //     headCell.setLeft(tailCell);
+    //     tailCell.setRight(headCell);
+
+    //     Snake snake = new Snake(headCell);
+
+    //     assertThat(headCell.getContent()).isInstanceOf(SnakePart.class);
+    //     assertThat(initialCell.getContent()).isInstanceOf(SnakePart.class);
+
     // }
+
+    @Test
+    public void newSnakeHasSizeOfTwoAndTailOnTheLeftOfTheHead() throws UnsupportedPlacementException
+    {
+        new Snake(a4x3SnakeGrid, 3, 2);
+        for(int x = 0; x < gridColums ; x++){
+            for(int y = 0; y < gridRows; y++){
+                if(x == 3 && y == 2 || x == 2 && y == 2){
+                    assertThat(a4x3SnakeGrid.getCell(x, y).getContent()).isInstanceOf(SnakePart.class);
+                } else {
+                    assertThat(a4x3SnakeGrid.getCell(x, y).getContent()).isInstanceOf(EmptySpace.class);
+                }
+            }
+        }
+    }
 
     @Test
     public void testSnakeMovingRightThenLeftShouldDie()

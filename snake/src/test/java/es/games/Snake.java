@@ -28,7 +28,12 @@ public class Snake {
     //     snakeGrid.getMiddleCell().getLeft().put(new SnakePart());
     // }
 
-    public Snake(SnakeGrid mockGrid, int i, int j) {
+    public Snake(SnakeGrid grid, int headX, int headY) throws UnsupportedPlacementException {
+        grid.getCell(headX, headY).put(new SnakePart());
+        grid.getCell(headX - 1, headY).put(new SnakePart());
+    }
+
+    public Snake(Cell cell) {
         //TODO Auto-generated constructor stub
     }
 
