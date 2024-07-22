@@ -18,7 +18,7 @@ public class Snake {
     private Direction direction;
     private Direction lastStepDirection;
     private SnakeGrid grid;
-    private int headCellXCoord = 3;
+    private int headCellXCoord = 2;
     private int headCellYCoord = 2;
     private int tailCellXCoord = 1;
     private int tailCellYCoord = 2;
