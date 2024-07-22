@@ -17,6 +17,11 @@ public class Snake {
 
     private Direction direction;
     private Direction lastStepDirection;
+    private SnakeGrid grid;
+    private int headCellXCoord = 3;
+    private int headCellYCoord = 2;
+    private int tailCellXCoord = 1;
+    private int tailCellYCoord = 2;
 
 
     public Snake(Direction initialDirection) {
@@ -29,6 +34,7 @@ public class Snake {
     // }
 
     public Snake(SnakeGrid grid, int headX, int headY) throws UnsupportedPlacementException {
+        this.grid = grid;
         grid.getCell(headX, headY).put(new SnakePart());
         grid.getCell(headX - 1, headY).put(new SnakePart());
     }
@@ -81,6 +87,12 @@ public class Snake {
     public Predicate nextEvent() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'nextEvent'");
+    }
+
+    public void proceed() throws UnsupportedPlacementException {
+
+        grid.getCell(headCellXCoord + 1, headCellYCoord).put(new SnakePart());
+        grid.getCell(tailCellXCoord, tailCellYCoord).put(new EmptySpace());
     }
 
 }

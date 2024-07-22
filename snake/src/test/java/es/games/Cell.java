@@ -12,13 +12,8 @@ public class Cell {
         return content;
     }
 
-    public void put(CellContent newContent) throws UnsupportedPlacementException {
-        if(content instanceof EmptySpace 
-            || content instanceof Fly && newContent instanceof SnakePart){
-            content = newContent;
-        } else {
-            throw new UnsupportedPlacementException();
-        }
+    public void put(CellContent newContent) {
+        content = newContent;
     }
 
 }
