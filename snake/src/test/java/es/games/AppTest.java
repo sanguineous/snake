@@ -50,15 +50,6 @@ public class AppTest
         assertThat(cell.getContent()).isInstanceOf(SnakePart.class);
     }
 
-    // @Test
-    // public void putAsnakePartOverASnakePart() throws UnsupportedPlacementException
-    // {
-    //     Cell cell = new Cell();
-    //     cell.put(new SnakePart());
-    //     assertThatThrownBy(() -> { cell.put(new SnakePart()); })
-    //         .isInstanceOf(UnsupportedPlacementException.class);
-    // }
-
     @Test
     public void putAflyOverAnEmptyCell() throws UnsupportedPlacementException
     {
@@ -76,53 +67,136 @@ public class AppTest
         assertThat(cell.getContent()).isInstanceOf(SnakePart.class);
     }
 
-    // @Test
-    // public void putAFlyOverAFly() throws UnsupportedPlacementException
-    // {
-    //     Cell cell = new Cell();
-    //     cell.put(new Fly());
-    //     assertThatThrownBy(() -> { cell.put(new Fly()); })
-    //         .isInstanceOf(UnsupportedPlacementException.class);
-    // }
-
-    // @Test
-    // public void boh(){
-    //     SnakeGrid mockGrid = mock(SnakeGrid.class);
-    //     new Snake(mockGrid, 3, 4);
-    //     verify(mockGrid.put(eq(3), eq(4), any(SnakePart.class)));
-    //     verify(mockGrid.put(eq(2), eq(4), any(SnakePart.class)));
-    // }
-
-    // @Test
-    // public void boh2(){
-    //     Cell headCell = new Cell();
-    //     Cell tailCell = new Cell();
-    //     headCell.setLeft(tailCell);
-    //     tailCell.setRight(headCell);
-
-    //     Snake snake = new Snake(headCell);
-
-    //     assertThat(headCell.getContent()).isInstanceOf(SnakePart.class);
-    //     assertThat(initialCell.getContent()).isInstanceOf(SnakePart.class);
-
-    // }
-
     @Test
-    public void newSnakeHasSizeOfTwoAndTailOnTheLeftOfTheHead() throws UnsupportedPlacementException
+    public void newSnakeHasSizeOfTwoAndTailOnTheLeftOfHisHead() throws UnsupportedPlacementException
     {
         new Snake(a4x3SnakeGrid, 3, 2);
-        assertCellsContains(SnakePart.class, new int[]{3,2}, new int[]{2,2});
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{3,2}, new int[]{2,2});
     }
 
+
     @Test
-    public void newSnakeMoveToTheRight() throws UnsupportedPlacementException
+    public void newSnakeMovesRight() throws UnsupportedPlacementException, IllegalMoveException
     {
         Snake snake = new Snake(a4x3SnakeGrid, 2, 2);
         snake.proceed();
-        assertCellsContains(SnakePart.class, new int[]{3,2}, new int[]{2,2});
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{3,2}, new int[]{2,2});
     }
 
-    private void assertCellsContains(Class<? extends CellContent> contentType, int[]... cellCoords) {
+    @Test
+    public void newSnakeMoves2TimesRight() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 1, 2);
+        snake.direction(Snake.Direction.RIGHT);
+        snake.proceed();
+        snake.proceed();
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{3,2}, new int[]{2,2});
+    }
+
+    @Test
+    public void newSnakeMovesUp() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 2);
+        snake.direction(Snake.Direction.UP);
+        snake.proceed();
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{2,1}, new int[]{2,2});
+    }
+
+    @Test
+    public void newSnakeMoves2TimesUp() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 2);
+        snake.direction(Snake.Direction.UP);
+        snake.proceed();
+        snake.proceed();
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{2,0}, new int[]{2,1});
+    }
+
+    @Test
+    public void newSnakeMovesDown() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 1);
+        snake.direction(Snake.Direction.DOWN);
+        snake.proceed();
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{2,2}, new int[]{2,1});
+    }
+
+    @Test
+    public void newSnakeMoves2TimesDown() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 0);
+        snake.direction(Snake.Direction.DOWN);
+        snake.proceed();
+        snake.proceed();
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{2,2}, new int[]{2,1});
+    }
+
+    @Test
+    public void newSnakeCannotMoveLeft() throws UnsupportedPlacementException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 2);
+        snake.direction(Snake.Direction.LEFT);
+        assertThatThrownBy(() -> { snake.proceed(); }).isInstanceOf(IllegalMoveException.class);
+    }
+
+    @Test
+    public void newSnakeCannotMoveUpAndThenDown() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 2);
+        snake.direction(Snake.Direction.UP);
+        snake.proceed();
+        snake.direction(Snake.Direction.DOWN);
+        assertThatThrownBy(() -> { snake.proceed(); }).isInstanceOf(IllegalMoveException.class);
+    }
+
+    @Test
+    public void newSnakeCannotMoveDownAndThenUp() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 1);
+        snake.direction(Snake.Direction.DOWN);
+        snake.proceed();
+        snake.direction(Snake.Direction.UP);
+        assertThatThrownBy(() -> { snake.proceed(); }).isInstanceOf(IllegalMoveException.class);
+    }
+
+    @Test
+    public void newSnakeCannotMoveLeftAndThenRight() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 1);
+        snake.direction(Snake.Direction.DOWN);
+        snake.proceed();
+        snake.direction(Snake.Direction.LEFT);
+        snake.proceed();
+        snake.direction(Snake.Direction.RIGHT);
+        assertThatThrownBy(() -> { snake.proceed(); }).isInstanceOf(IllegalMoveException.class);
+    }
+
+    @Test
+    public void newSnakeMoveRightDownLeftUpRight() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 1);
+        snake.proceed();
+        snake.direction(Snake.Direction.DOWN);
+        snake.proceed();
+        snake.direction(Snake.Direction.LEFT);
+        snake.proceed();
+        snake.direction(Snake.Direction.UP);
+        snake.proceed();
+        snake.direction(Snake.Direction.RIGHT);
+        snake.proceed();
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{3,1}, new int[]{2,1});
+    }
+
+    @Test
+    public void newSnakeMovesRightAndEatsAFly() throws UnsupportedPlacementException, IllegalMoveException
+    {
+        Snake snake = new Snake(a4x3SnakeGrid, 2, 1);
+        a4x3SnakeGrid.getCell(3, 1).put(new Fly());
+        snake.proceed();
+        assert4x3GridCellsContainsOnly(SnakePart.class, new int[]{3,1}, new int[]{2,1}, new int[]{1,1});
+    }
+
+    private void assert4x3GridCellsContainsOnly(Class<? extends CellContent> contentType, int[]... cellCoords) {
         for(int x = 0; x < gridColums ; x++){
             for(int y = 0; y < gridRows; y++){
                 if( coordsContains( cellCoords, x, y) ){
@@ -138,27 +212,4 @@ public class AppTest
         return Stream.of(cellCoords).anyMatch(coord -> coord[0] == x && coord[1] == y);
     }
 
-    @Test
-    public void testSnakeMovingRightThenLeftShouldDie()
-    {
-        Snake snake = new Snake(Snake.Direction.RIGHT);
-        snake.move();
-        snake.direction(Snake.Direction.LEFT);
-        assertThat(snake.move()).isEqualTo(Snake.Operations.DIE);
-    }
-
-    // @Test
-    // public void testSnakEatsItself()
-    // {
-    //     Snake snake = new Snake(Snake.Direction.RIGHT);
-    //     snake.moveAndEat();
-    //     snake.moveAndEat();
-    //     snake.moveAndEat();
-    //     snake.direction(Snake.Direction.DOWN);
-    //     snake.move();
-    //     snake.direction(Snake.Direction.LEFT);
-    //     snake.move();
-    //     snake.direction(Snake.Direction.LEFT);
-    //     assertThat(snake.move()).isEqualTo(Snake.Operations.DIE);
-    // }
 }
