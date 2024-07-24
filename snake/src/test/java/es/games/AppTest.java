@@ -199,7 +199,7 @@ public class AppTest
     private void assert4x3GridCellsContainsOnly(Class<? extends CellContent> contentType, int[]... cellCoords) {
         for(int x = 0; x < gridColums ; x++){
             for(int y = 0; y < gridRows; y++){
-                if( coordsContains( cellCoords, x, y) ){
+                if( coordsContains(cellCoords, x, y) ){
                     assertThat(a4x3SnakeGrid.getCell(x, y).getContent()).isInstanceOf(SnakePart.class);
                 } else {
                     assertThat(a4x3SnakeGrid.getCell(x, y).getContent()).isInstanceOf(EmptySpace.class);
@@ -212,4 +212,45 @@ public class AppTest
         return Stream.of(cellCoords).anyMatch(coord -> coord[0] == x && coord[1] == y);
     }
 
+    @Test
+    public void cellRightLeft(){
+        Cell cell = Cell.init();
+        assertThat(cell.getRight().getLeft()).isEqualTo(cell);
+    }
+
+    @Test
+    public void cellLeftRight(){
+        Cell cell = Cell.init();
+        assertThat(cell.getLeft().getRight()).isEqualTo(cell);
+    }
+
+    @Test
+    public void cellUpDown(){
+        Cell cell = Cell.init();
+        assertThat(cell.getUp().getDown()).isEqualTo(cell);
+    }
+
+    @Test
+    public void cellDownUp(){
+        Cell cell = Cell.init();
+        assertThat(cell.getDown().getUp()).isEqualTo(cell);
+    }
+
+    @Test
+    public void cellDownDownUpUp(){
+        Cell cell = Cell.init();
+        assertThat(cell.getDown().getDown().getUp().getUp()).isEqualTo(cell);
+    }
+
+    @Test
+    public void cellDownRightUpLeft(){
+        Cell cell = Cell.init();
+        assertThat(cell.getDown().getRight().getUp().getLeft()).isEqualTo(cell);
+    }
+
+    @Test
+    public void cellDownLeftUpRight(){
+        Cell cell = Cell.init();
+        assertThat(cell.getDown().getLeft().getUp().getRight()).isEqualTo(cell);
+    }
 }
